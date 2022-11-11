@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.collectingservice.mapper.CollectingMapper">
+    <select id="findBarcode" resultType="String">
+        select c.barcode
+          from collecting c
+         where (select max(cg.barcode_dt)
+                  from collecting cg
+              group by cg.barcode);
+    </select>
+
+    <insert id="insertNewBarcode">
+        {call sequence('barcode')};
+
+        insert into collecting (barcode, status_code, barcode_dt, barcode_printer_id, prescribeCode) values (
+            (select concat('1' , (select LPAD ((select nextval('barcode') from dual), 5, 0)from dual)) from dual),
+            'B',
+            now(),
+            'D_001',
+            #{prescribeCode}
+        )
+    </insert>
+</mapper>
+
+
+<!--        CREATE TABLE `collecting` (-->
+<!--        `barcord`	bigint	NOT NULL,-->
+<!--        `status_code`	varchar(2)	NOT NULL,-->
+<!--        `barcord_dt`	datetime	NOT NULL,-->
+<!--        `collecting_dt`	datetime	NULL,-->
+<!--        `barcord_printer_id`	varchar(20)	NOT NULL,-->
+<!--        `collector_id`	varchar(20)	NULL,-->
+<!--        `prescribe_code`	bigint	NOT NULL-->
+<!--        );-->

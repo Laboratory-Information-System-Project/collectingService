@@ -4,17 +4,16 @@ server:
 spring:
   application:
     name: collecting-service
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url:
-#    username:
-#    password:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: localhost:3306/collecting
+    username: root
+    password: root
 #  rabbitmq:
 #    host: localhost
 #    port: 5672
 #    username: guest
 #    password: guest
-
 
 eureka:
   instance:
@@ -30,6 +29,9 @@ management:
     web:
       exposure:
         include: refresh, health, beans, busrefresh
+
 #token:
 #  expireTime: 86400000
+mybatis:
+  mapper-locations: classpath:mappers/**/**.xml
 #  secret: user_token
