@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.collectingservice.mapper.BarcodeMapper">
+    <select id="findBarcode" resultType="String">
+        select max(cg.barcode)
+        from collecting cg;
+    </select>
+
+    <insert id="initBarcode">
+        {call sequence('barcode')}
+    </insert>
+
+    <insert id="insertNewBarcode">
+
+        insert into collecting (barcode, status_code, barcode_dt, barcode_printer_id, prescribe_code)
+        values
+        <foreach collection="prescribeCodeList" item="item" separator=",">
+            (
+            (
+            select concat(#{today},
+            (select LPAD (
+            (select nextval('barcode') from dual), 5, 0)
+            from dual)
+            ) from dual ),
+            'B', -- kafka로 상태변경 해줘야함
+            now(),
+            'N001', -- 토큰에서 가져 올것.
+            #{item}
+            )
+        </foreach>
+    </insert>
+</mapper>
+
+
+        <!--        CREATE TABLE `collecting` (-->
+        <!--        `barcode`	varchar(30)	NOT NULL,-->
+        <!--        `status_code`	varchar(2)	NOT NULL,-->
+        <!--        `barcode_dt`	datetime	NOT NULL,-->
+        <!--        `collecting_dt`	datetime	NULL,-->
+        <!--        `barcode_printer_id`	varchar(20)	NOT NULL,-->
+        <!--        `collector_id`	varchar(20)	NULL,-->
+        <!--        `prescribe_code`	bigint	NOT NULL-->
+        <!--        );-->

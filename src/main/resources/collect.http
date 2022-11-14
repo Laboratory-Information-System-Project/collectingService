@@ -1,0 +1,12 @@
+POST /collecting-service/collecting
+Content-Type: application/json
+Host: localhost:10000
+
+{
+  "barcodeList": [
+   "22111300007",
+   "22111300008"
+]
+}
+
+###
