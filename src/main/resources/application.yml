@@ -37,3 +37,6 @@ management:
 #token:
 #  expireTime: 86400000
 #  secret: user_token
+
+mybatis:
+  mapper-locations: classpath:mappers/**/**.xml
