@@ -7,29 +7,45 @@
         from collecting cg;
     </select>
 
+    <select id="findAllByPrescribeCode" resultType="String">
+        select c.barcode
+        from collecting c
+        where prescribe_code in (
+        <foreach collection="prescribeList" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
     <insert id="initBarcode">
         {call sequence('barcode')}
     </insert>
 
     <insert id="insertNewBarcode">
-
+        <foreach collection="prescribeCodeList" item="item" separator=";">
         insert into collecting (barcode, status_code, barcode_dt, barcode_printer_id, prescribe_code)
-        values
-        <foreach collection="prescribeCodeList" item="item" separator=",">
+             select
             (
-            (
-            select concat(#{today},
-            (select LPAD (
-            (select nextval('barcode') from dual), 5, 0)
-            from dual)
-            ) from dual ),
-            'B', -- kafka로 상태변경 해줘야함
-            now(),
-            'N001', -- 토큰에서 가져 올것.
-            #{item}
-            )
+            select concat(${today},
+                         (select LPAD ((select nextval('barcode') from dual), 5, 0)
+                            from dual)
+            ) from dual ),'B', now(), 'N001', ${item}
+            from dual
+            where isnull( (select c.barcode
+            from collecting c
+            where prescribe_code = ${item} ))
         </foreach>
     </insert>
+
+    <update id="deleteBarcode">
+    update collecting
+       set cancel_barcode_dt = now(), status_code= 'X'
+     where barcode in (
+         <foreach collection="barcodeList" item="item" separator=",">
+             #{item}
+         </foreach>
+         )
+    </update>
 </mapper>
 
 

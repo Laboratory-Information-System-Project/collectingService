@@ -8,4 +8,6 @@ public interface BarcodeService {
     String createBarcode(NewBarcodeDto prescribeCodeList);
 
     List<String> getBarcodeList(NewBarcodeDto prescribeCodeList);
+
+    String removeBarcode(List<String> barcodeList);
 }

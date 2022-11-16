@@ -4,8 +4,8 @@ import com.douzone.collectingservice.mapper.CollectingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,18 +17,35 @@ public class CollectingServiceImpl implements CollectingService{
     @Override
     @Transactional
     public String collect(List<String> barcodeList) {
-        Integer result = collectingMapper.findCollectedBarcode(barcodeList);
 
-        if(result > 0){
+        if(!collectingMapper.findCollectedBarcode(barcodeList).isEmpty()){
             return "collecting data already exists";
         }
 
-        Integer resultNo = collectingMapper.updateCollectingData(barcodeList);
+        if(collectingMapper.updateCollectingData(barcodeList) == barcodeList.size()){
 
-        if(resultNo == barcodeList.size()){
             return "update success";
         }
 
         return "update fail";
     }
+
+    @Override
+    public List<String> getPrescribeCodeByBarcode(List<String> barcodeList) {
+        return collectingMapper.findPrescribeCodeByBarcode(barcodeList);
+    }
+
+    @Override
+    @Transactional
+    public String removeCollectingInfo(List<String> barcodeList) {
+        Integer result = collectingMapper.deleteCollectingData(barcodeList);
+
+        if(result == barcodeList.size()){
+            return "채혈이 취소되었습니다.";
+            }
+
+        return "채혈 취소에 실패하였습니다.";
+    }
+
+
 }

@@ -21,18 +21,9 @@ public class BarcodeServiceImpl implements BarcodeService {
         String barcode = barcodeMapper.findBarcode();
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
 
-        //TODO 리팩토링(바코드 없을때랑 새로운 날짜일때 완벽하게 같은 작업을 하는데 나눠야 하는게 마음에 안듬)
-
         // barcode가 없을때
-        if (Objects.isNull(barcode)) {
+        if (Objects.isNull(barcode) || Objects.equals(false, today.matches(barcode.substring(0,6)))) {
             // 시퀀스를 초기화 하고 바코드를 새로 생성
-            barcodeMapper.initBarcode();
-            return insertNewBarcode(prescribeCodeList, today);
-        }
-
-        String dayForCompare = barcode.substring(0,6);
-        // 새로운 날짜일때
-        if(!today.matches(dayForCompare)){
             barcodeMapper.initBarcode();
             return insertNewBarcode(prescribeCodeList, today);
         }
@@ -44,13 +35,24 @@ public class BarcodeServiceImpl implements BarcodeService {
 
     @Override
     public List<String> getBarcodeList(NewBarcodeDto prescribeCodeList) {
-        return null;
+
+        return barcodeMapper.findAllByPrescribeCode(prescribeCodeList.getPrescribeList());
+    }
+
+    @Override
+    public String removeBarcode(List<String> barcodeList) {
+        Integer result = barcodeMapper.deleteBarcode(barcodeList);
+
+        if(result == barcodeList.size()){
+            return "선택하신 바코드 발급이 취소되었습니다";
+        }
+        return "바코드 발급 취소가 실패하였습니다.";
     }
 
     private String insertNewBarcode(NewBarcodeDto prescribeCodeList, String today) {
         Integer result = barcodeMapper.insertNewBarcode(prescribeCodeList.getPrescribeList(), today);
 
-        if (prescribeCodeList.getPrescribeList().size() == result) {
+        if (result==1) {
             return "create barcode successfully!";
         } else {
             return "failed create barcode!";

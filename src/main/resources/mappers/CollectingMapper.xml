@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.collectingservice.mapper.CollectingMapper">
-    <select id="findCollectedBarcode" resultType="Integer">
-            select count(barcode)
+    <select id="findCollectedBarcode" resultType="String">
+            select barcode
             from collecting
             where barcode in
             (
@@ -11,7 +11,7 @@
                 #{item}
             </foreach>
             )
-            and !isnull(collecting_dt);
+            and (!isnull(collecting_dt) or status_code != 'B');
     </select>
 
     <update id="updateCollectingData">
@@ -24,6 +24,28 @@
             )
         -- FIXME 채혈자 id 토큰에 있는걸로 할것
     </update>
+
+    <select id="findPrescribeCodeByBarcode" resultType="String">
+        select prescribe_code
+        from collecting
+        where barcode in (
+            <foreach collection="barcodeList" item="item" separator=",">
+                #{item}
+            </foreach>
+            )
+
+    </select>
+
+    <update id="deleteCollectingData">
+        update collecting
+           set cancel_collecting_dt = now(), status_code = 'B'
+         where barcode in(
+             <foreach collection="barcodeList" item="item" separator=",">
+                 #{item}
+             </foreach>
+             )
+    </update>
+
 </mapper>
 
         <!--        CREATE TABLE `collecting` (-->
