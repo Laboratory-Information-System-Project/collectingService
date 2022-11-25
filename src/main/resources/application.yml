@@ -6,10 +6,10 @@ spring:
     name: collecting-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://192.168.0.189:33306/collecting?allowMultiQueries=true
-    url: jdbc:mysql://localhost:3306/collecting?allowMultiQueries=true
-    username: root
-    password: root
+    url: jdbc:mysql://192.168.0.189:33306/collecting?allowMultiQueries=true
+#    url: jdbc:mysql://localhost:3306/collecting?allowMultiQueries=true
+    username: scott
+    password: tiger
 
 #  rabbitmq:
 #    host: localhost

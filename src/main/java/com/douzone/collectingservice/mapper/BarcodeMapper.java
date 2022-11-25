@@ -1,8 +1,10 @@
 package com.douzone.collectingservice.mapper;
 
+import com.douzone.collectingservice.domain.NewBarcodeDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BarcodeMapper {
@@ -16,8 +18,9 @@ public interface BarcodeMapper {
 
     void initBarcode();
 
-    List<String> findAllByPrescribeCode(List<String> prescribeList);
+    List<String> findBarcodeByPrescribeCode(List<String> prescribeList);
 
     Integer deleteBarcode(List<String> barcodeList);
 
+    List<Map<Object, Object>> findAllByPrescribeCodeForKafka(NewBarcodeDto prescribeCodeList);
 }

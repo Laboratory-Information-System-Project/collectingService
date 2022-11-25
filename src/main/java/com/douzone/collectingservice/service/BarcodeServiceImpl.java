@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -36,7 +37,7 @@ public class BarcodeServiceImpl implements BarcodeService {
     @Override
     public List<String> getBarcodeList(NewBarcodeDto prescribeCodeList) {
 
-        return barcodeMapper.findAllByPrescribeCode(prescribeCodeList.getPrescribeList());
+        return barcodeMapper.findBarcodeByPrescribeCode(prescribeCodeList.getPrescribeCodeList());
     }
 
     @Override
@@ -49,8 +50,13 @@ public class BarcodeServiceImpl implements BarcodeService {
         return "바코드 발급 취소가 실패하였습니다.";
     }
 
+    @Override
+    public List<Map<Object, Object>> getAll(NewBarcodeDto prescribeCodeList) {
+        return barcodeMapper.findAllByPrescribeCodeForKafka(prescribeCodeList);
+    }
+
     private String insertNewBarcode(NewBarcodeDto prescribeCodeList, String today) {
-        Integer result = barcodeMapper.insertNewBarcode(prescribeCodeList.getPrescribeList(), today);
+        Integer result = barcodeMapper.insertNewBarcode(prescribeCodeList.getPrescribeCodeList(), today);
 
         if (result==1) {
             return "create barcode successfully!";

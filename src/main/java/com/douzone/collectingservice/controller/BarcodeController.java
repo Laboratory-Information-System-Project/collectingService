@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,20 +20,22 @@ public class BarcodeController {
 
     @PostMapping("/barcode")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<String> newBarcode(@RequestBody NewBarcodeDto prescribeCodeList) {
+    public List<String> newBarcode (@RequestBody NewBarcodeDto prescribeCodeList) {
         String result = barcodeService.createBarcode(prescribeCodeList);
         List<String> barcode = new ArrayList<>();
         barcode.add(result);
 
-        kafkaProducer.send("updateStatus","B", prescribeCodeList.getPrescribeList());
+        kafkaProducer.send("updateStatus","B", prescribeCodeList.getPrescribeCodeList());
 
         barcode.addAll(barcodeService.getBarcodeList(prescribeCodeList));
+
+        List<Map<Object, Object>> prescribe = barcodeService.getAll(prescribeCodeList);
 
         return barcode;
     }
 
     // FIXME url마음에 안든다...
-    @PostMapping("/barcode/canceldate")
+    @PostMapping("/barcode/canceleddate")
     public List<String> cancelBarcode(@RequestBody Map<String, List<String>> barcodeListMap){
         List<String> barcodeList = barcodeListMap.get("barcodeList");
         String result = barcodeService.removeBarcode(barcodeList);

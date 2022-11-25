@@ -11,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class NewBarcodeDto {
 
-    List<String> prescribeList;
+    List<String> prescribeCodeList;
 }

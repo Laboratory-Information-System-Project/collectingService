@@ -44,7 +44,6 @@ public class CollectingController {
 
     private void checkSuccessAndSendKafkaMessage(String message, String result, String updateStatus, String status, List<String> barcodes) {
         if(Objects.equals(message, result)) {
-
             kafkaProducer.send(updateStatus, status, collectingService.getPrescribeCodeByBarcode(barcodes));
             barcodes.add(result);
         }

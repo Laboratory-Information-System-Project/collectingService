@@ -3,6 +3,7 @@ package com.douzone.collectingservice.service;
 import com.douzone.collectingservice.domain.NewBarcodeDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BarcodeService {
     String createBarcode(NewBarcodeDto prescribeCodeList);
@@ -10,4 +11,6 @@ public interface BarcodeService {
     List<String> getBarcodeList(NewBarcodeDto prescribeCodeList);
 
     String removeBarcode(List<String> barcodeList);
+
+    List<Map<Object, Object>> getAll(NewBarcodeDto prescribeCodeList);
 }

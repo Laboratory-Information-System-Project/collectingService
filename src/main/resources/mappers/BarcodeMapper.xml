@@ -7,7 +7,7 @@
         from collecting cg;
     </select>
 
-    <select id="findAllByPrescribeCode" resultType="String">
+    <select id="findBarcodeByPrescribeCode" resultType="String">
         select c.barcode
         from collecting c
         where prescribe_code in (
@@ -23,13 +23,13 @@
 
     <insert id="insertNewBarcode">
         <foreach collection="prescribeCodeList" item="item" separator=";">
-        insert into collecting (barcode, status_code, barcode_dt, barcode_printer_id, prescribe_code)
+        insert into collecting (barcode, barcode_dt, barcode_printer_id, prescribe_code)
              select
             (
             select concat(${today},
                          (select LPAD ((select nextval('barcode') from dual), 5, 0)
                             from dual)
-            ) from dual ),'B', now(), 'N001', ${item}
+            ) from dual ), now(), 'N001', ${item}
             from dual
             where isnull( (select c.barcode
             from collecting c
@@ -46,15 +46,15 @@
          </foreach>
          )
     </update>
+
+    <select id="findAllByPrescribeCodeForKafka" resultType="HashMap">
+        select barcode, prescribe_code, collector_id, barcode_printer_id,
+                barcode_dt, collecting_dt, cancel_barcode_dt, cancel_collecting_dt
+          from collecting
+         where prescribe_code in (
+             <foreach collection="prescribeCodeList" item="item" separator=",">
+                 #{item}
+             </foreach>
+        )
+    </select>
 </mapper>
-
-
-        <!--        CREATE TABLE `collecting` (-->
-        <!--        `barcode`	varchar(30)	NOT NULL,-->
-        <!--        `status_code`	varchar(2)	NOT NULL,-->
-        <!--        `barcode_dt`	datetime	NOT NULL,-->
-        <!--        `collecting_dt`	datetime	NULL,-->
-        <!--        `barcode_printer_id`	varchar(20)	NOT NULL,-->
-        <!--        `collector_id`	varchar(20)	NULL,-->
-        <!--        `prescribe_code`	bigint	NOT NULL-->
-        <!--        );-->
