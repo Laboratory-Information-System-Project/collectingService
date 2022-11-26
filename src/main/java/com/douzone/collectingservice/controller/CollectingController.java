@@ -18,11 +18,11 @@ public class CollectingController {
     private final CollectingService collectingService;
     private final KafkaProducer kafkaProducer;
     @PutMapping("/collecting")
-    public List<String> collecting(@RequestBody Map<String, List<String>> barcodeList) {
+    public List<String> collecting(@RequestBody Map<String, List<String>> prescribeCodeList) {
 
-        log.info("{}", barcodeList);
+        log.info("{}", prescribeCodeList);
 
-        List<String> barcodes = barcodeList.get("barcodeList");
+        List<String> barcodes = prescribeCodeList.get("prescribeCodeList");
 
         String result = collectingService.collect(barcodes);
 
@@ -33,12 +33,12 @@ public class CollectingController {
 
     @PutMapping("/collecting/canceldate")
     public List<String> cancelCollecting(@RequestBody Map<String, List<String>> barcodeListMap ) {
-        List<String> barcodeList = barcodeListMap.get("barcodeList");
-        String result = collectingService.removeCollectingInfo(barcodeList);
+        List<String> prescribeCodeList = barcodeListMap.get("prescribeCodeList");
+        String result = collectingService.removeCollectingInfo(prescribeCodeList);
 
-        checkSuccessAndSendKafkaMessage("채혈이 취소되었습니다.", result, "updateStatus", "B", barcodeList);
+        checkSuccessAndSendKafkaMessage("채혈이 취소되었습니다.", result, "updateStatus", "B", prescribeCodeList);
 
-        return barcodeList;
+        return prescribeCodeList;
 
     }
 

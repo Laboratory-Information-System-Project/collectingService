@@ -22,7 +22,7 @@ Host: localhost:10000
 
 ###
 
-POST /collecting-service/barcode/canceldate
+PUT /collecting-service/barcode
 Content-Type: application/json
 Host: localhost:10000
 

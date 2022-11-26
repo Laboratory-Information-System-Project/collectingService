@@ -34,18 +34,17 @@ public class BarcodeController {
         return barcode;
     }
 
-    // FIXME url마음에 안든다...
-    @PostMapping("/barcode/canceleddate")
+    @PutMapping("/barcode")
     public List<String> cancelBarcode(@RequestBody Map<String, List<String>> barcodeListMap){
-        List<String> barcodeList = barcodeListMap.get("barcodeList");
-        String result = barcodeService.removeBarcode(barcodeList);
+        List<String> prescribeCodeList = barcodeListMap.get("prescribeCodeList");
+        String result = barcodeService.removeBarcode(prescribeCodeList);
 
         if(Objects.equals(result, "선택하신 바코드 발급이 취소되었습니다")){
-            kafkaProducer.send("updateStatus","X", collectingService.getPrescribeCodeByBarcode(barcodeList));
+            kafkaProducer.send("updateStatus","X", collectingService.getPrescribeCodeByBarcode(prescribeCodeList));
         }
 
-        barcodeList.add(result);
+        prescribeCodeList.add(result);
 
-        return barcodeList;
+        return prescribeCodeList;
     }
 }

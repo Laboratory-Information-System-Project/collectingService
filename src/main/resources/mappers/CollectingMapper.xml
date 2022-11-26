@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.collectingservice.mapper.CollectingMapper">
-    <select id="findCollectedBarcode" resultType="String">
-            select barcode
+    <select id="findCollectedPrescribeCode" resultType="String">
+            select prescribe_code
             from collecting
-            where barcode in
+            where prescribe_code in
             (
             <foreach collection="barcodeList" item="item" separator=",">
                 #{item}
@@ -17,7 +17,7 @@
     <update id="updateCollectingData">
         update collecting
         set collecting_dt = now(), collector_id = 'N001'
-        where barcode in (
+        where prescribe_code in (
         <foreach collection="barcodeList" item="item" separator=",">
             #{item}
         </foreach>
@@ -39,7 +39,7 @@
     <update id="deleteCollectingData">
         update collecting
            set cancel_collecting_dt = now()
-         where barcode in(
+         where prescribe_code in(
              <foreach collection="barcodeList" item="item" separator=",">
                  #{item}
              </foreach>

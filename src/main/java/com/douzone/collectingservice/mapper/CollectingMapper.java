@@ -6,7 +6,7 @@ import java.util.List;
 
 @Mapper
 public interface CollectingMapper {
-    List<String> findCollectedBarcode(List<String> barcodeList);
+    List<String> findCollectedPrescribeCode(List<String> barcodeList);
 
     Integer updateCollectingData(List<String> barcodeList);
 
