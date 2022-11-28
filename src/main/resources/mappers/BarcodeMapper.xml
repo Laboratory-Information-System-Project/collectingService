@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.collectingservice.mapper.BarcodeMapper">
+    <select id="findBarcode" resultType="String">
+        select max(cg.barcode)
+        from collecting cg;
+    </select>
+
+    <select id="findBarcodeByPrescribeCode" resultType="String">
+        select c.barcode
+        from collecting c
+        where prescribe_code in (
+        <foreach collection="prescribeList" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <insert id="initBarcode">
+        {call sequence('barcode')}
+    </insert>
+
+    <insert id="insertNewBarcode">
+        <foreach collection="prescribeCodeList" item="item" separator=";">
+        insert into collecting (barcode, barcode_dt, barcode_printer_id, prescribe_code)
+             select
+            (
+            select concat(${today},
+                         (select LPAD ((select nextval('barcode') from dual), 5, 0)
+                            from dual)
+            ) from dual ), now(), 'N001', ${item}
+            from dual
+            where isnull((select c.barcode
+            from collecting c
+            where prescribe_code in(
+            ${item}
+                )  ))
+        </foreach>
+    </insert>
+
+    <update id="deleteBarcode" parameterType="String">
+    update collecting
+       set cancel_barcode_dt = now()
+     where prescribe_code in (
+         <foreach collection="barcodeList" item="item" separator=",">
+             ${item}
+         </foreach>
+         )
+    </update>
+
+    <select id="findAllByPrescribeCodeForKafka" resultType="HashMap">
+        select barcode, prescribe_code, collector_id, barcode_printer_id,
+                barcode_dt, collecting_dt, cancel_barcode_dt, cancel_collecting_dt
+          from collecting
+         where prescribe_code in (
+             <foreach collection="prescribeCodeList" item="item" separator=",">
+                 #{item}
+             </foreach>
+        )
+    </select>
+</mapper>
