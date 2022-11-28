@@ -1,14 +1,14 @@
 server:
-  port: 0
+  port: 8001
 
 spring:
   application:
     name: collecting-service
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url:
-#    username:
-#    password:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.40.12:33306/collecting
+    username: scott
+    password: tiger
 #  rabbitmq:
 #    host: localhost
 #    port: 5672
@@ -32,4 +32,8 @@ management:
         include: refresh, health, beans, busrefresh
 #token:
 #  expireTime: 86400000
-#  secret: user_token
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/**/*.xml
