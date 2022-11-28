@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.collectingservice.mapper.receiptMapper.ReceiptMapper">
+<!--    <select id="collectData" resultType="String">-->
+    <select id="collectData" resultType="com.douzone.collectingservice.domain.receiptdomain.ReceiptDomainDTO">
+--         SELECT barcode,collecting_dt,collector_id,prescribe_code
+        SELECT barcode
+        FROM collecting
+--         where barcode = #{barcode};
+    </select>
+
+    <select id="test" resultType="String">
+    select barcode
+      from collecting
+    </select>
+</mapper>
