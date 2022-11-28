@@ -29,10 +29,10 @@ public class CollectingServiceImpl implements CollectingService{
         return "update fail";
     }
 
-    @Override
-    public List<String> getPrescribeCodeByBarcode(List<String> barcodeList) {
-        return collectingMapper.findPrescribeCodeByBarcode(barcodeList);
-    }
+    // @Override
+    // public List<String> getPrescribeCodeByBarcode(List<String> prescribeCodes) {
+    //     return collectingMapper.findPrescribeCodeByBarcode(prescribeCodes);
+    // }
 
     @Override
     @Transactional

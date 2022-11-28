@@ -28,8 +28,8 @@
     <select id="findPrescribeCodeByBarcode" resultType="String">
         select prescribe_code
         from collecting
-        where barcode in (
-            <foreach collection="barcodeList" item="item" separator=",">
+        where prescribe_code in (
+            <foreach collection="prescribeCodes" item="item" separator=",">
                 #{item}
             </foreach>
             )

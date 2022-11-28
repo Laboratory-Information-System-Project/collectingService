@@ -42,10 +42,10 @@ public class CollectingController {
 
     }
 
-    private void checkSuccessAndSendKafkaMessage(String message, String result, String updateStatus, String status, List<String> barcodes) {
+    private void checkSuccessAndSendKafkaMessage(String message, String result, String updateStatus, String status, List<String> prescribeCodes) {
         if(Objects.equals(message, result)) {
-            kafkaProducer.send(updateStatus, status, collectingService.getPrescribeCodeByBarcode(barcodes));
-            barcodes.add(result);
+            kafkaProducer.send(updateStatus, status, prescribeCodes);
+            prescribeCodes.add(result);
         }
     }
 }

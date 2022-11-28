@@ -40,7 +40,7 @@ public class BarcodeController {
         String result = barcodeService.removeBarcode(prescribeCodeList);
 
         if(Objects.equals(result, "선택하신 바코드 발급이 취소되었습니다")){
-            kafkaProducer.send("updateStatus","X", collectingService.getPrescribeCodeByBarcode(prescribeCodeList));
+            kafkaProducer.send("updateStatus","X", prescribeCodeList);
         }
 
         prescribeCodeList.add(result);

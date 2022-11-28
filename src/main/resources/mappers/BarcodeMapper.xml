@@ -31,9 +31,11 @@
                             from dual)
             ) from dual ), now(), 'N001', ${item}
             from dual
-            where isnull( (select c.barcode
+            where isnull((select c.barcode
             from collecting c
-            where prescribe_code = ${item} ))
+            where prescribe_code in(
+            ${item}
+                )  ))
         </foreach>
     </insert>
 
@@ -42,7 +44,7 @@
        set cancel_barcode_dt = now()
      where prescribe_code in (
          <foreach collection="barcodeList" item="item" separator=",">
-             #{item}
+             ${item}
          </foreach>
          )
     </update>
