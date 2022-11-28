@@ -1,0 +1,47 @@
+PUT /collecting-service/collecting
+Content-Type: application/json
+Host: localhost:10000
+
+{
+  "barcodeList": [
+    "22112300001",
+    "22112300002",
+    "22112300003"
+]
+}
+
+###
+
+POST /collecting-service/barcode
+Content-Type: application/json
+Host: localhost:10000
+
+{
+  "prescribeCodeList" : [1,2,3]
+}
+
+###
+
+PUT /collecting-service/barcode
+Content-Type: application/json
+Host: localhost:10000
+
+{
+  "barcodeList": [
+    "22111600001",
+    "22111600002"
+  ]
+}
+
+###
+
+PUT /collecting-service/collecting/canceldate
+Content-Type: application/json
+Host: localhost:10000
+
+{
+  "barcodeList": [
+    "22111500001",
+    "22111500002"
+  ]
+}
