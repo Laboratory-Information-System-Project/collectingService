@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.collectingservice.mapper.CollectingMapper">
+    <select id="findCollectedPrescribeCode" resultType="String">
+            select prescribe_code
+            from collecting
+            where prescribe_code in
+            (
+            <foreach collection="barcodeList" item="item" separator=",">
+                #{item}
+            </foreach>
+            )
+            and (!isnull(collecting_dt));
+    </select>
+
+    <update id="updateCollectingData">
+        update collecting
+        set collecting_dt = now(), collector_id = 'N001'
+        where prescribe_code in (
+        <foreach collection="barcodeList" item="item" separator=",">
+            #{item}
+        </foreach>
+            )
+        -- FIXME 채혈자 id 토큰에 있는걸로 할것
+    </update>
+
+    <select id="findPrescribeCodeByBarcode" resultType="String">
+        select prescribe_code
+        from collecting
+        where prescribe_code in (
+            <foreach collection="prescribeCodes" item="item" separator=",">
+                #{item}
+            </foreach>
+            )
+
+    </select>
+
+    <update id="deleteCollectingData">
+        update collecting
+           set cancel_collecting_dt = now()
+         where prescribe_code in(
+             <foreach collection="barcodeList" item="item" separator=",">
+                 #{item}
+             </foreach>
+             )
+    </update>
+
+</mapper>
+
+        <!--        CREATE TABLE `collecting` (-->
+        <!--        `barcode`	varchar(30)	NOT NULL,-->
+        <!--        `status_code`	varchar(2)	NOT NULL,-->
+        <!--        `barcode_dt`	datetime	NOT NULL,-->
+        <!--        `collecting_dt`	datetime	NULL,-->
+        <!--        `barcode_printer_id`	varchar(20)	NOT NULL,-->
+        <!--        `collector_id`	varchar(20)	NULL,-->
+        <!--        `prescribe_code`	bigint	NOT NULL-->
+        <!--        );-->
