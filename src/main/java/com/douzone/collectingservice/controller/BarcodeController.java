@@ -1,7 +1,7 @@
 package com.douzone.collectingservice.controller;
 
 import com.douzone.collectingservice.domain.NewBarcodeDto;
-import com.douzone.collectingservice.service.BarcodeService;
+import com.douzone.collectingservice.service.barcode.BarcodeService;
 import com.douzone.collectingservice.service.collecting.CollectingService;
 import com.douzone.collectingservice.service.kafka.KafkaProducer;
 import lombok.RequiredArgsConstructor;

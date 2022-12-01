@@ -1,4 +1,4 @@
-package com.douzone.collectingservice.service;
+package com.douzone.collectingservice.service.barcode;
 
 import com.douzone.collectingservice.domain.NewBarcodeDto;
 import com.douzone.collectingservice.mapper.BarcodeMapper;

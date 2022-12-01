@@ -22,13 +22,13 @@ public class CollectingController {
 
         log.info("{}", prescribeCodeList);
 
-        List<String> barcodes = prescribeCodeList.get("prescribeCodeList");
+        List<String> prescribeCodes = prescribeCodeList.get("prescribeCodeList");
 
-        String result = collectingService.collect(barcodes);
+        String result = collectingService.collect(prescribeCodes);
 
-        checkSuccessAndSendKafkaMessage("update success", result, "updateStatus", "C", barcodes);
+        checkSuccessAndSendKafkaMessage("update success", result, "updateStatus", "C", prescribeCodes);
 
-        return barcodes;
+        return prescribeCodes;
     }
 
     @PutMapping("/collecting/canceldate")

@@ -11,7 +11,8 @@
                 #{item}
             </foreach>
             )
-            and (!isnull(collecting_dt));
+            and (!isnull(collecting_dt))
+            and isnull(cancel_collecting_dt);
     </select>
 
     <update id="updateCollectingData">
@@ -21,7 +22,7 @@
         <foreach collection="barcodeList" item="item" separator=",">
             #{item}
         </foreach>
-            )
+            ) and isnull(cancel_barcode_dt);
         -- FIXME 채혈자 id 토큰에 있는걸로 할것
     </update>
 
@@ -43,7 +44,7 @@
              <foreach collection="barcodeList" item="item" separator=",">
                  #{item}
              </foreach>
-             )
+             )and isnull(cancel_barcode_dt);
     </update>
 
 </mapper>
