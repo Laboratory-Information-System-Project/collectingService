@@ -6,10 +6,4 @@
         INSERT INTO unsuitable_status_management (barcode, unsuitable_reason_code, unsuitable_reason_text, notificator_id, notified_user_id)
         VALUES (#{sampleBarcode}, #{selectedReason}, #{query}, #{notificatorId}, #{notifiedId});
     </insert>
-
-    <select  id="findUnsuitableSample" resultType="com.douzone.collectingservice.domain.UnsuitableSampleDTO" parameterType="Map">
-        SELECT unsuitable_reason_code, barcode, notified_user_id, notificator_id, unsuitable_reason_text
-        FROM data.unsuitable_status_management
-        WHERE unsuitable_reason_code=#{selectedReason} AND barcode = #{barcode};
-    </select>
 </mapper>

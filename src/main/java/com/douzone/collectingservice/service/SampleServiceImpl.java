@@ -16,14 +16,7 @@ public class SampleServiceImpl implements SampleService{
     public void insertUnsuitableSample(List<Map<String, String>> unsuitInfo) {
         for(Map<String, String> item : unsuitInfo
              ) {
-            //부적합 검체 사유 체크
-            UnsuitableSampleDTO result = mapper.findUnsuitableSample(item);
-            if(result == null){
                 mapper.insertUnsuitableSampleInfo(item);
-            }
-
-
-
         }
     }
 
