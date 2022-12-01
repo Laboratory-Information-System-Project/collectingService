@@ -7,9 +7,12 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.0.189:33306/collecting?allowMultiQueries=true
-#    url: jdbc:mysql://localhost:3306/collecting?allowMultiQueries=true
     username: scott
     password: tiger
+
+#    url: jdbc:mysql://lis-project.cwjfch0v8vje.ap-northeast-2.rds.amazonaws.com/collecting?allowMultiQueries=true
+#    username: root
+#    password: 12345678
 
 #  rabbitmq:
 #    host: localhost
@@ -38,4 +41,4 @@ management:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
-  mapper-locations: classpath:mapper/**/*.xml
+  mapper-locations: classpath:mappers/**/*.xml

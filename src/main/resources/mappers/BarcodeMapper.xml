@@ -26,7 +26,7 @@
         insert into collecting (barcode, barcode_dt, barcode_printer_id, prescribe_code)
              select
             (
-            select concat(${today},
+             select concat(${today},
                          (select LPAD ((select nextval('barcode') from dual), 5, 0)
                             from dual)
             ) from dual ), now(), 'N001', ${item}
@@ -35,7 +35,7 @@
             from collecting c
             where prescribe_code in(
             ${item}
-                )  ))
+                ) and isnull(cancel_barcode_dt)))
         </foreach>
     </insert>
 
