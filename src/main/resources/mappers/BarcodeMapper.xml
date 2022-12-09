@@ -22,20 +22,32 @@
     </insert>
 
     <insert id="insertNewBarcode">
-        <foreach collection="prescribeCodeList" item="item" separator=";">
+        <foreach collection="prescribeCodeList" item="item" index="index" separator=";">
         insert into collecting (barcode, barcode_dt, barcode_printer_id, prescribe_code)
-             select
+            <choose>
+                <when test="index eq 0">
+            select
             (
-             select concat(${today},
-                         (select LPAD ((select nextval('barcode') from dual), 5, 0)
-                            from dual)
-            ) from dual ), now(), 'N001', ${item}
+                select concat(${today},
+                    (select LPAD ((select nextval('barcode') from dual), 5, 0)
+                  from dual)
+                     ) from dual ),
+                </when>
+                <otherwise>
+                    select
+                        (select concat(${today},
+                                LPAD(
+                            (select currval from sequences where name='barcode'),5,0))
+                    from dual),
+                </otherwise>
+            </choose>
+                now(), 'N001', ${item}
             from dual
             where isnull((select c.barcode
             from collecting c
             where prescribe_code in(
             ${item}
-                ) and isnull(cancel_barcode_dt)))
+            ) and isnull(cancel_barcode_dt)))
         </foreach>
     </insert>
 
@@ -60,3 +72,12 @@
         )
     </select>
 </mapper>
+
+
+
+
+
+
+
+
+
