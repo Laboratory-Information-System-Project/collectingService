@@ -18,7 +18,7 @@ public class CollectingController {
     private final CollectingService collectingService;
     private final KafkaProducer kafkaProducer;
     @PutMapping("/collecting")
-    public List<String> collecting(@RequestBody Map<String, List<String>> prescribeCodeList) {
+    public String collecting(@RequestBody Map<String, List<String>> prescribeCodeList) {
 
         log.info("{}", prescribeCodeList);
 
@@ -28,7 +28,7 @@ public class CollectingController {
 
         checkSuccessAndSendKafkaMessage("update success", result, "updateStatus", "C", prescribeCodes);
 
-        return prescribeCodes;
+        return result;
     }
 
     @PutMapping("/collecting/canceldate")

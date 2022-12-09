@@ -1,12 +1,10 @@
 PUT /collecting-service/collecting
 Content-Type: application/json
-Host: localhost:10000
+Host: localhost:8000
 
 {
-  "barcodeList": [
-    "22112300001",
-    "22112300002",
-    "22112300003"
+  "prescribeCodeList": [
+    "18"
 ]
 }
 
@@ -24,7 +22,7 @@ Host: localhost:10000
 
 PUT /collecting-service/barcode
 Content-Type: application/json
-Host: localhost:10000
+Host: localhost:8000
 
 {
   "barcodeList": [
