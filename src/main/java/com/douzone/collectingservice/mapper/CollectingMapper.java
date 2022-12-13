@@ -12,7 +12,7 @@ public interface CollectingMapper {
 
     List<String> findPrescribeCodeByBarcode(List<String> barcodeList);
 
-    Integer deleteCollectingData(List<String> barcodeList);
+    Integer deleteCollectingData(List<String> barcodeList, String userId);
 
     void updateCollectingForDelete(List<String> prescribeCodeList);
 }

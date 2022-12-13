@@ -39,7 +39,7 @@
 
     <update id="deleteCollectingData">
         update collecting
-           set cancel_collecting_dt = now(), collecting_dt = null, collector_id = null;
+           set cancel_collecting_dt = now(), cancel_collecting_id = #{userId},collecting_dt = null, collector_id = null
          where prescribe_code in(
              <foreach collection="barcodeList" item="item" separator=",">
                  #{item}

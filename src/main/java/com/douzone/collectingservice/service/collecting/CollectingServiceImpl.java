@@ -2,6 +2,7 @@ package com.douzone.collectingservice.service.collecting;
 
 import com.douzone.collectingservice.mapper.CollectingMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +11,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CollectingServiceImpl implements CollectingService{
 
     private final CollectingMapper collectingMapper;
@@ -22,7 +24,11 @@ public class CollectingServiceImpl implements CollectingService{
             return "collecting data already exists";
         }
 
-        if(collectingMapper.updateCollectingData(prescribeCodeList.get("prescribeCodeList"), prescribeCodeList.get("userId").get(0)) == prescribeCodeList.size()){
+        int result = collectingMapper.updateCollectingData(prescribeCodeList.get("prescribeCodeList"), prescribeCodeList.get("userId").get(0));
+        log.info("{}", prescribeCodeList.get("prescribeCodeList").size());
+        log.info("{}", result);
+
+        if( result == prescribeCodeList.get("prescribeCodeList").size()){
 
             return "update success";
         }
@@ -37,10 +43,10 @@ public class CollectingServiceImpl implements CollectingService{
 
     @Override
     @Transactional
-    public String removeCollectingInfo(List<String> prescribeCodeList) {
-        Integer result = collectingMapper.deleteCollectingData(prescribeCodeList);
+    public String removeCollectingInfo(Map<String, List<String>> prescribeCodeList) {
+        Integer result = collectingMapper.deleteCollectingData(prescribeCodeList.get("prescribeCodeList"), prescribeCodeList.get("userId").get(0));
 
-        if(result == prescribeCodeList.size()){
+        if(result == prescribeCodeList.get("prescribeCodeList").size()){
             return "채혈이 취소되었습니다.";
             }
 

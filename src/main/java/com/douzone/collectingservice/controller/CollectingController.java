@@ -32,13 +32,13 @@ public class CollectingController {
     }
 
     @PutMapping("/collecting/canceldate")
-    public List<String> cancelCollecting(@RequestBody Map<String, List<String>> barcodeListMap ) {
+    public String cancelCollecting(@RequestBody Map<String, List<String>> barcodeListMap ) {
         List<String> prescribeCodeList = barcodeListMap.get("prescribeCodeList");
-        String result = collectingService.removeCollectingInfo(prescribeCodeList);
+        String result = collectingService.removeCollectingInfo(barcodeListMap);
 
         checkSuccessAndSendKafkaMessage("채혈이 취소되었습니다.", result, "updateStatus", "B", prescribeCodeList);
 
-        return prescribeCodeList;
+        return result;
 
     }
 
