@@ -8,9 +8,11 @@ import java.util.List;
 public interface CollectingMapper {
     List<String> findCollectedPrescribeCode(List<String> barcodeList);
 
-    Integer updateCollectingData(List<String> barcodeList);
+    Integer updateCollectingData(List<String> barcodeList, String userId);
 
     List<String> findPrescribeCodeByBarcode(List<String> barcodeList);
 
     Integer deleteCollectingData(List<String> barcodeList);
+
+    void updateCollectingForDelete(List<String> prescribeCodeList);
 }

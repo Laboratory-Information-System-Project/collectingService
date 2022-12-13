@@ -41,7 +41,7 @@
                     from dual),
                 </otherwise>
             </choose>
-                now(), 'N001', ${item}
+                now(), #{userId}, ${item}
             from dual
             where isnull((select c.barcode
             from collecting c
@@ -53,7 +53,7 @@
 
     <update id="deleteBarcode" parameterType="String">
     update collecting
-       set cancel_barcode_dt = now()
+       set cancel_barcode_dt = now(), cancel_barcode_id = #{userId}
      where prescribe_code in (
          <foreach collection="barcodeList" item="item" separator=",">
              ${item}

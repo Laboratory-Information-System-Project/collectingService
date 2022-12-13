@@ -24,7 +24,7 @@ public class CollectingController {
 
         List<String> prescribeCodes = prescribeCodeList.get("prescribeCodeList");
 
-        String result = collectingService.collect(prescribeCodes);
+        String result = collectingService.collect(prescribeCodeList);
 
         checkSuccessAndSendKafkaMessage("update success", result, "updateStatus", "C", prescribeCodes);
 

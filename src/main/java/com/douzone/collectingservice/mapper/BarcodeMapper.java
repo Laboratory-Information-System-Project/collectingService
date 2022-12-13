@@ -1,6 +1,5 @@
 package com.douzone.collectingservice.mapper;
 
-import com.douzone.collectingservice.domain.NewBarcodeDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public interface BarcodeMapper {
     String findBarcode();
 
     // barcode가 없거나 새로운 날짜 일때
-    Integer insertNewBarcode(List<String> prescribeCodeList, String today);
+    Integer insertNewBarcode(List<Object> prescribeCodeList, String today, String userId);
 
     // barcode가 있고 당일 일때
     // Integer insertBarcode(List<Long> prescribeCodeList, String today);
@@ -20,7 +19,7 @@ public interface BarcodeMapper {
 
     List<String> findBarcodeByPrescribeCode(List<String> prescribeList);
 
-    Integer deleteBarcode(List<String> barcodeList);
+    Integer deleteBarcode(List<String> barcodeList, String userId);
 
-    List<Map<Object, Object>> findAllByPrescribeCodeForKafka(NewBarcodeDto prescribeCodeList);
+    List<Map<Object, Object>> findAllByPrescribeCodeForKafka(List<String> prescribeCodeList);
 }
