@@ -1,16 +1,14 @@
 package com.douzone.collectingservice.service.barcode;
 
-import com.douzone.collectingservice.domain.NewBarcodeDto;
-
 import java.util.List;
 import java.util.Map;
 
 public interface BarcodeService {
-    String createBarcode(NewBarcodeDto prescribeCodeList);
+    String createBarcode(Map<String, List<Object>> prescribeCodeList);
 
-    List<String> getBarcodeList(NewBarcodeDto prescribeCodeList);
+    List<String> getBarcodeList(List<String> prescribeCodeList);
 
-    String removeBarcode(List<String> barcodeList);
+    String removeBarcode(Map<String, List<String>> barcodeList);
 
-    List<Map<Object, Object>> getAll(NewBarcodeDto prescribeCodeList);
+    List<Map<Object, Object>> getAll(List<String> prescribeCodeList);
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -15,13 +16,13 @@ public class CollectingServiceImpl implements CollectingService{
 
     @Override
     @Transactional
-    public String collect(List<String> prescribeCodeList) {
+    public String collect(Map<String, List<String>> prescribeCodeList) {
 
-        if(!collectingMapper.findCollectedPrescribeCode(prescribeCodeList).isEmpty()){
+        if(!collectingMapper.findCollectedPrescribeCode(prescribeCodeList.get("prescribeCodeList")).isEmpty()){
             return "collecting data already exists";
         }
 
-        if(collectingMapper.updateCollectingData(prescribeCodeList) == prescribeCodeList.size()){
+        if(collectingMapper.updateCollectingData(prescribeCodeList.get("prescribeCodeList"), prescribeCodeList.get("userId").get(0)) == prescribeCodeList.size()){
 
             return "update success";
         }

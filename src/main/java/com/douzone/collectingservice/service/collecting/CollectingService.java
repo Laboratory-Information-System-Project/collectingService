@@ -1,9 +1,10 @@
 package com.douzone.collectingservice.service.collecting;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CollectingService {
-    String collect(List<String> barcodeList);
+    String collect(Map<String, List<String>> barcodeList);
     // List<String> getPrescribeCodeByBarcode(List<String> barcodeList);
 
     String removeCollectingInfo(List<String> barcodeList);

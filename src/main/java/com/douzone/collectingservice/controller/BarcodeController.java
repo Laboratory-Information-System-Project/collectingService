@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,24 +21,25 @@ public class BarcodeController {
 
     @PostMapping("/barcode")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<String> newBarcode (@RequestBody NewBarcodeDto prescribeCodeList) {
-        String result = barcodeService.createBarcode(prescribeCodeList);
+    public List<String> newBarcode (@RequestBody Map<String, List<Object>> prescribeInfoList) {
+        String result = barcodeService.createBarcode(prescribeInfoList);
+        List<String> prescribeCodes = prescribeInfoList.get("prescribeCodeList").stream().map(item-> item.toString()).collect(Collectors.toList());
         List<String> barcode = new ArrayList<>();
         barcode.add(result);
 
-        kafkaProducer.send("updateStatus","B", prescribeCodeList.getPrescribeCodeList());
+        kafkaProducer.send("updateStatus","B", prescribeCodes);
 
-        barcode.addAll(barcodeService.getBarcodeList(prescribeCodeList));
+        barcode.addAll(barcodeService.getBarcodeList(prescribeCodes));
 
-        List<Map<Object, Object>> prescribe = barcodeService.getAll(prescribeCodeList);
+        List<Map<Object, Object>> prescribe = barcodeService.getAll(prescribeCodes);
 
         return barcode;
     }
 
     @PutMapping("/barcode")
-    public List<String> cancelBarcode(@RequestBody Map<String, List<String>> barcodeListMap){
+    public String cancelBarcode(@RequestBody Map<String, List<String>> barcodeListMap){
         List<String> prescribeCodeList = barcodeListMap.get("prescribeCodeList");
-        String result = barcodeService.removeBarcode(prescribeCodeList);
+        String result = barcodeService.removeBarcode(barcodeListMap);
 
         if(Objects.equals(result, "선택하신 바코드 발급이 취소되었습니다")){
             kafkaProducer.send("updateStatus","X", prescribeCodeList);
@@ -45,6 +47,6 @@ public class BarcodeController {
 
         prescribeCodeList.add(result);
 
-        return prescribeCodeList;
+        return result;
     }
 }
