@@ -3,7 +3,7 @@
 
 <mapper namespace="com.douzone.collectingservice.mapper.SampleMapper">
     <insert id="insertUnsuitableSampleInfo" parameterType="Map">
-        INSERT INTO unsuitable_status_management (barcode, unsuitable_reason_code, unsuitable_reason_text, notificator_id, notified_user_id, unsuitable_update_dt)
-        VALUES (#{sampleBarcode}, #{selectedReason}, #{query}, #{notificatorId}, #{notifiedId}, now());
+        INSERT INTO unsuitable_status_management (barcode, unsuitable_reason_code, unsuitable_reason_text, notificator_id, notified_user_id, unsuitable_update_dt, prescribe_code)
+        VALUES (#{sampleBarcode}, #{selectedReason}, #{query}, #{notificatorId}, #{notifiedId}, now(), #{prescribeCode});
     </insert>
 </mapper>
