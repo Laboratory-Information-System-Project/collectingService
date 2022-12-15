@@ -46,6 +46,15 @@
              </foreach>
              )and isnull(cancel_barcode_dt);
     </update>
+    <update id="updateCancelInspection">
+        update collecting
+        set is_canceled_inspection = ${status}
+        where prescribe_code in (
+        <foreach collection="prescribeCode" item="item" separator=",">
+            ${item}
+        </foreach>
+        )
+    </update>
 
 </mapper>
 
