@@ -20,6 +20,7 @@ public class UnsuitableController {
 
     @PostMapping("/unsuitable-reason-management/")
     public void insertUnsuitableSample(@RequestBody List<Map<String, String>> unsuitInfo) {
+        System.out.println(unsuitInfo);
         service.insertUnsuitableSample(unsuitInfo);
     }
 
