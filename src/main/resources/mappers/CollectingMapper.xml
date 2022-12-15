@@ -22,7 +22,7 @@
         <foreach collection="barcodeList" item="item" separator=",">
             #{item}
         </foreach>
-            ) and isnull(cancel_barcode_dt);
+            ) and isnull(cancel_barcode_dt)  and is_canceled_inspection = 0;
         -- FIXME 채혈자 id 토큰에 있는걸로 할것
     </update>
 
@@ -45,6 +45,16 @@
                  #{item}
              </foreach>
              )and isnull(cancel_barcode_dt);
+    </update>
+
+    <update id="updateCancelInspection">
+        update collecting
+           set is_canceled_inspection = ${status}
+         where prescribe_code in (
+             <foreach collection="prescribeCode" item="item" separator=",">
+                 ${item}
+             </foreach>
+             )
     </update>
 
 </mapper>

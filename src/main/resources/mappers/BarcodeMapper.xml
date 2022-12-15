@@ -47,7 +47,7 @@
             from collecting c
             where prescribe_code in(
             ${item}
-            ) and isnull(cancel_barcode_dt)))
+            ) and isnull(cancel_barcode_dt) and is_canceled_inspection = 1))
         </foreach>
     </insert>
 

@@ -1,5 +1,6 @@
 package com.douzone.collectingservice.service.kafka;
 
+import com.douzone.collectingservice.mapper.CollectingMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,11 +19,11 @@ import java.util.Map;
 public class KafkaConsumer {
 
     // FIXME: repository -> mapper
-    // private final CatalogRepository catalogRepository;
+    private final CollectingMapper collectingMapper;
     //
     // FIXME: topics modify, method customizing
-    @KafkaListener(topics = "test")
-    public void updateQty(String kafkaMessage){
+    @KafkaListener(topics = "updateCancellation")
+    public void updateCollecting(String kafkaMessage){
         log.info("Kafka Message: ->" + kafkaMessage);
 
         Map<String, Object> map = new HashMap<>();
@@ -32,5 +33,7 @@ public class KafkaConsumer {
         }catch (JsonProcessingException ex){
             ex.printStackTrace();
         }
+
+        collectingMapper.updateCancelInspection(map.get("prescribeCode"), map.get("status").toString());
     }
 }

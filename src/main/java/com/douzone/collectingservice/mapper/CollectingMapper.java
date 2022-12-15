@@ -15,4 +15,6 @@ public interface CollectingMapper {
     Integer deleteCollectingData(List<String> barcodeList, String userId);
 
     void updateCollectingForDelete(List<String> prescribeCodeList);
+
+    void updateCancelInspection(Object prescribeCode, String status);
 }
